@@ -1,17 +1,43 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>Home</ion-title>
+    <ion-title>Weekly Forecast</ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content padding>
-  <h2>Welcome to Ionic!</h2>
-  <p>
-    This starter project comes with simple tabs-based layout for apps
-    that are going to primarily use a Tabbed UI.
-  </p>
-  <p>
-    Take a look at the <code>src/pages/</code> directory to add or change tabs,
-    update any existing page or create new pages.
-  </p>
+  <h1>Weather App</h1>
+  <form id="zip-form" [formGroup]="zipForm" (ngSubmit)="onSubmit(zipForm.value)">
+    <ion-item>
+      <ion-label floating>
+        Zipcode
+      </ion-label>
+      <ion-input [formControl]="zipForm.controls['zipcode']" type="text"></ion-input>
+    </ion-item>
+    <ion-row>
+      <ion-col text-center>
+      </ion-col>
+        <button type="submit" ion-button block color="secondary">
+          Submit
+        </button>
+    </ion-row>
+  </form>
+  <p text-center>or</p>
+  <button (click)="this.locateMe()" ion-button block color="primary">
+    Locate
+  </button>
+  <ion-grid class="weather-grid" text-center *ngIf="this.dataResolved">
+    <ion-row>
+      <ion-col *ngFor="let item of forecastArray">
+        <ion-card class="weather-card">
+          <ion-card-header>
+            {{item.day}}
+          </ion-card-header>
+          <img src={{item.conditions.icon}} />
+          <p>{{item.conditions.name}}</p>
+          <p>Currently: {{item.avgTemp}}&deg;F</p>
+          <p>Low: {{item.low}}&deg;F  High: {{item.high}}&deg;F</p>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>
